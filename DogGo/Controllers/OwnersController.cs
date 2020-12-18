@@ -20,6 +20,12 @@ namespace DogGo.Controllers
         private IWalkerRepository _walkerRepo;
         private INeighborhoodRepository _neighborhoodRepo;
 
+        private int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
+        }
+
         public OwnersController(IOwnerRepository ownerRepo, IDogRepository dogRepo, IWalkerRepository walkerRepo, INeighborhoodRepository neighborRepo)
         {
             _ownerRepo = ownerRepo;
@@ -31,9 +37,18 @@ namespace DogGo.Controllers
         // GET: OwnersController
         public ActionResult Index()
         {
+            int currentUserId = GetCurrentUserId();
+
+            return RedirectToAction("Details", new { id = currentUserId });
+
             List<Owner> owners = _ownerRepo.GetAllOwners();
 
             return View(owners);
+        }
+
+        private int getCurrectUserId()
+        {
+            throw new NotImplementedException();
         }
 
         // GET: Owners/Details/5
